@@ -1,0 +1,7 @@
+# Core dependencies
+httpx[http2]>=0.25.0
+pydantic>=2.0.0
+
+# Optional but recommended
+# For colored logging output (optional)
+# rich>=13.0.0
