@@ -2,6 +2,10 @@
 
 Scrapes public Instagram profiles and posts using HTTP requests. No browser automation, no manual cookies, no OAuth - just run it.
 
+## Architecture
+
+See [architecture/DESIGN.md](architecture/DESIGN.md) for detailed system design documentation.
+
 ## Requirements
 
 - Python 3.10+
@@ -76,11 +80,20 @@ Results are saved as JSON in the `output/` folder with profile data and posts:
 **"Rate limited"**
 - Too many requests. The scraper will auto-retry with delays.
 
-**Missing profile fields**
-- Some fields (verified badge, category) require authentication. The scraper gets what's publicly available.
-
 ## Limitations
 
 - Only works with **public** accounts
 - Instagram may change their API without notice
 - No comment scraping (profile + posts only)
+
+### Profile Fields Requiring Authentication
+
+The following profile fields cannot be retrieved without Instagram authentication:
+
+| Field | Status | Reason |
+|-------|--------|--------|
+| `is_verified` | Always `false` | Requires authenticated API |
+| `category_name` | Always `null` | Requires authenticated API |
+| `external_url` | Always `null` | Requires authenticated API |
+
+These fields are included in the output schema but will have default/null values when scraping without authentication. All other profile fields (username, full_name, biography, follower_count, following_count, posts_count, profile_pic_url) are fully available from public HTML meta tags.
